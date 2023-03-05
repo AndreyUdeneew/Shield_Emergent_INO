@@ -1,3 +1,6 @@
+// The shild sends into UART 115200 "FLT1" in the case of the fault on the power of the first camera
+// and "FLT2" in the case of the power falt of the scond camera
+// send "RES1", "RES2" or "RESB" to reset camera 1, camera 2 or both cameras respectively
 String cmd, num_of_pins_str, CMDcur;
 uint8_t EN1 = 27;
 uint8_t EN2 = 6;
