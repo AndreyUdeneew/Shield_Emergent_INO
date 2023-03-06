@@ -6,17 +6,18 @@ uint8_t EN1 = 27;
 uint8_t EN2 = 6;
 uint8_t FLT1 = 26;
 uint8_t FLT2 = 7;
+uint8_t faultChannel = 0;
 
 void setup() {
-  // put your setup code here, to run once: 
+  // put your setup code here, to run once:
   pinMode(EN1, OUTPUT);
   pinMode(EN2, OUTPUT);
-  pinMode(FLT1, INPUT_PULLUP);
-  pinMode(FLT2, INPUT_PULLUP);
   digitalWrite(EN1, HIGH);
   digitalWrite(EN2, HIGH);
-  attachInterrupt(digitalPinToInterrupt(FLT1), Fault1, FALLING);
-  attachInterrupt(digitalPinToInterrupt(FLT2), Fault2, FALLING);
+  attachInterrupt(digitalPinToInterrupt(FLT1), Fault1, LOW);
+  attachInterrupt(digitalPinToInterrupt(FLT2), Fault2, LOW);
+  pinMode(FLT1, INPUT_PULLUP);// 4 Rpi Pico pull_up must be after the attachinterrupt. It's a bug.
+  pinMode(FLT2, INPUT_PULLUP);// 4 Rpi Pico pull_up must be after the attachinterrupt. It's a bug.
   Serial.begin(115200);
   Serial.setTimeout(100);
   while (!Serial) {
@@ -26,20 +27,29 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  if  (!Serial) {
+    Serial.begin(115200);
+  }
   waiting_4_command();
-
-
+  if (faultChannel == 1)
+  {
+    Serial.println("FLT1");
+    faultChannel = 0;
+  }
+  if (faultChannel == 2)
+  {
+    Serial.println("FLT2");
+    faultChannel = 0;
+  }
 }
 
 void Fault1()
 {
-  Serial.println("FLT1");
-  return;
+  faultChannel = 1;
 }
 void Fault2()
 {
-  Serial.println("FLT2");
-  return;
+  faultChannel = 2;
 }
 
 void waiting_4_command() {
