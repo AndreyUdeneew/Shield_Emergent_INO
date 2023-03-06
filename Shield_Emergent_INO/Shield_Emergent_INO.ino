@@ -11,8 +11,8 @@ void setup() {
   // put your setup code here, to run once: 
   pinMode(EN1, OUTPUT);
   pinMode(EN2, OUTPUT);
-  pinMode(FLT1, INPUT);
-  pinMode(FLT2, INPUT);
+  pinMode(FLT1, INPUT_PULLUP);
+  pinMode(FLT2, INPUT_PULLUP);
   digitalWrite(EN1, HIGH);
   digitalWrite(EN2, HIGH);
   attachInterrupt(digitalPinToInterrupt(FLT1), Fault1, FALLING);
@@ -34,10 +34,12 @@ void loop() {
 void Fault1()
 {
   Serial.println("FLT1");
+  return;
 }
 void Fault2()
 {
   Serial.println("FLT2");
+  return;
 }
 
 void waiting_4_command() {
