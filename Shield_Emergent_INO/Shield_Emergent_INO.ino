@@ -20,9 +20,9 @@ void setup() {
   pinMode(FLT2, INPUT_PULLUP);// 4 Rpi Pico pull_up must be after the attachinterrupt. It's a bug.
   Serial.begin(115200);
   Serial.setTimeout(100);
-  while (!Serial) {
-    ;
-  }
+//  while (!Serial) {
+//    ;
+//  }
 }
 
 void loop() {
